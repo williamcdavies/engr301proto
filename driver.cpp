@@ -20,10 +20,6 @@ void process_terminal_input(std::string line, std::map<std::string, std::string>
     if(bcn_to_lp.find(bcn) == bcn_to_lp.end()) {
         throw std::runtime_error("error: unrecognized barcode number");
     }
-
-    // set all chars in 'line' to lowercase
-    std::transform(command.begin(), command.end(), command.begin(), [](unsigned char c) {return std::tolower(c);});
-
     if(command == "park") {
         // set parking status to true
         lp_to_ps[bcn_to_lp[bcn]] = true;
@@ -32,8 +28,11 @@ void process_terminal_input(std::string line, std::map<std::string, std::string>
         lp_to_ps[bcn_to_lp[bcn]] = false;
     } else if(command == "status") {
         // if parking status is true, return "parked". otherwise, return "unparked"
-        if(lp_to_ps[bcn_to_lp[bcn]]) std::cout << "parked\n";
-        else std::cout << "unparked\n";
+        if(lp_to_ps[bcn_to_lp[bcn]]) {
+            std::cout << "parked" << '\n';
+        } else {
+            std::cout << "unparked" << '\n';
+        }
     } else {
         // throw on unrecognized command
         throw std::runtime_error("error: unrecognized command");
@@ -63,29 +62,20 @@ int main(int argc, char* argv[]) {
         std::cerr << "error: ifs failure" << '\n';
         return EXIT_FAILURE;
     }
-
     // instantiate barcode number to license plate map
     std::map<std::string, std::string> bcn_to_lp;
     load_bcn_to_lp(bcn_to_lp, ifs);
     // instantiate license plate to parking status map
     std::map<std::string, bool> lp_to_ps;
+    
 
-    std::string command, bcn;
-    bool running = true;
-    char exit_key;
 
-    while (running){
-        std::cout << "\nEnter command and barcode number (ie. park 1234567890).\n";
-        std::cin >> command >> bcn;
-        process_terminal_input(command, bcn, bcn_to_lp, lp_to_ps);
 
-        std::cout << "\nenter [e] to exit, or any other key to continue.\n";
-        std::cin >> exit_key;
-        if(exit_key == 'e' || exit_key == 'E'){
-            running = false;
-            break;
-        }
-    }
+
+
+
+
+
 
     return EXIT_SUCCESS;
 }
