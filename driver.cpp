@@ -9,9 +9,11 @@
 #include <stdexcept>
 
 // process text input from terminal
-void process_terminal_input(std::string line, std::map<std::string, std::string>& bcn_to_lp, std::map<std::string, bool>& lp_to_ps) {
+void process_terminal_input(std::string line, std::map<std::string, std::string>& bcn_to_lp, 
+    std::map<std::string, bool>& lp_to_ps) {
     // set all chars in 'line' to lowercase
-    std::transform(line.begin(), line.end(), line.begin(), [](unsigned char c) {return std::tolower(c);});
+    std::transform(line.begin(), line.end(), line.begin(), 
+        [](unsigned char c) {return std::tolower(c);});
     unsigned int delimeter_pos = line.find_first_of(' ');
     std::string command = line.substr(0, delimeter_pos);
     std::string bcn = line.substr(delimeter_pos);
